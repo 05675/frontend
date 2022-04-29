@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import * as React from "react";
+import React, { useCallback } from "react";
 import Table from "@mui/material/Table";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
@@ -13,7 +13,6 @@ import { GenderCheckBox } from "../components/genderCheckBox";
 import ScreenSearchDesktopIcon from "@mui/icons-material/ScreenSearchDesktop";
 import { SearchInputBox } from "./searchInputBox";
 import { SearchButton } from "./searchButton";
-import { useState } from "react";
 import Button from "@mui/material/Button";
 import SearchIcon from "@mui/icons-material/Search";
 import TextField from "@mui/material/TextField";
@@ -58,11 +57,20 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
+/**
+ * @param props
+ * @returns
+ *
+ * TODO: 性別のチェックボックスから情報を取得
+ * TODO: 各Inputにエラーチェック。
+ * 馬名系：カタカナのみ
+ * 他：漢字も
+ */
+
 export const SearchArea: React.FC<Props> = (props) => {
-  const { register, handleSubmit } = useForm({
+  const { register, handleSubmit, getValues } = useForm({
     defaultValues: {
       horseName: "",
-      birthday: "",
       father: "",
       mother: "",
       motherFather: "",
@@ -77,30 +85,18 @@ export const SearchArea: React.FC<Props> = (props) => {
     },
   });
 
-  const [searchHorse, setSearchHorse] = useState<Info>({
-    horseName: "",
-    birthday: "",
-    father: "",
-    mother: "",
-    motherFather: "",
-    motherMother: "",
-    sex: "",
-    coatColor: "",
-    horseNameMeaning: "",
-    horseOwner: "",
-    trainer: "",
-    productionRanch: "",
-    origin: "",
-  });
-
-  const onSubmit = () => {
-    console.log("test:", searchHorse);
-  };
+  const onSubmit = useCallback(
+    (data: Info) => {
+      getValues();
+      console.log("test:", data);
+    },
+    [getValues]
+  );
 
   return (
     <div>
-      <TableContainer component={Paper}>
-        <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <TableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }}>
             <TableHead>
               <TableRow>
@@ -127,19 +123,11 @@ export const SearchArea: React.FC<Props> = (props) => {
                 <StyledTableCell align="left">
                   <TextField
                     style={{ width: "500px" }}
-                    name="horseName"
                     margin="dense"
                     label="馬名"
                     size={"small"}
                     variant="outlined"
-                    onChange={(e) =>
-                      setSearchHorse({
-                        ...searchHorse,
-                        horseName: e.target.value,
-                      })
-                    }
-                    value={searchHorse.horseName}
-                    inputRef={register}
+                    {...register("horseName")}
                   />
                 </StyledTableCell>
               </StyledTableRow>
@@ -150,15 +138,11 @@ export const SearchArea: React.FC<Props> = (props) => {
                 <StyledTableCell align="left">
                   <TextField
                     style={{ width: "500px" }}
-                    name="父"
                     margin="dense"
                     label="父"
                     size={"small"}
                     variant="outlined"
-                    onChange={(e) =>
-                      setSearchHorse({ ...searchHorse, father: e.target.value })
-                    }
-                    value={searchHorse.father}
+                    {...register("father")}
                   />
                 </StyledTableCell>
               </StyledTableRow>
@@ -169,15 +153,11 @@ export const SearchArea: React.FC<Props> = (props) => {
                 <StyledTableCell align="left">
                   <TextField
                     style={{ width: "500px" }}
-                    name="母"
                     margin="dense"
                     label="母"
                     size={"small"}
                     variant="outlined"
-                    onChange={(e) =>
-                      setSearchHorse({ ...searchHorse, mother: e.target.value })
-                    }
-                    value={searchHorse.mother}
+                    {...register("mother")}
                   />
                 </StyledTableCell>
               </StyledTableRow>
@@ -188,18 +168,11 @@ export const SearchArea: React.FC<Props> = (props) => {
                 <StyledTableCell align="left">
                   <TextField
                     style={{ width: "500px" }}
-                    name="母父"
                     margin="dense"
                     label="母父"
                     size={"small"}
                     variant="outlined"
-                    onChange={(e) =>
-                      setSearchHorse({
-                        ...searchHorse,
-                        motherFather: e.target.value,
-                      })
-                    }
-                    value={searchHorse.motherFather}
+                    {...register("motherFather")}
                   />
                 </StyledTableCell>
               </StyledTableRow>
@@ -210,18 +183,11 @@ export const SearchArea: React.FC<Props> = (props) => {
                 <StyledTableCell align="left">
                   <TextField
                     style={{ width: "500px" }}
-                    name="調教師"
                     margin="dense"
                     label="調教師"
                     size={"small"}
                     variant="outlined"
-                    onChange={(e) =>
-                      setSearchHorse({
-                        ...searchHorse,
-                        trainer: e.target.value,
-                      })
-                    }
-                    value={searchHorse.trainer}
+                    {...register("trainer")}
                   />
                 </StyledTableCell>
               </StyledTableRow>
@@ -232,18 +198,11 @@ export const SearchArea: React.FC<Props> = (props) => {
                 <StyledTableCell align="left">
                   <TextField
                     style={{ width: "500px" }}
-                    name="馬主"
                     margin="dense"
                     label="馬主"
                     size={"small"}
                     variant="outlined"
-                    onChange={(e) =>
-                      setSearchHorse({
-                        ...searchHorse,
-                        horseOwner: e.target.value,
-                      })
-                    }
-                    value={searchHorse.horseOwner}
+                    {...register("horseOwner")}
                   />
                 </StyledTableCell>
               </StyledTableRow>
@@ -254,18 +213,11 @@ export const SearchArea: React.FC<Props> = (props) => {
                 <StyledTableCell align="left">
                   <TextField
                     style={{ width: "500px" }}
-                    name="生産者"
                     margin="dense"
                     label="生産者"
                     size={"small"}
                     variant="outlined"
-                    onChange={(e) =>
-                      setSearchHorse({
-                        ...searchHorse,
-                        productionRanch: e.target.value,
-                      })
-                    }
-                    value={searchHorse.productionRanch}
+                    {...register("productionRanch")}
                   />
                 </StyledTableCell>
               </StyledTableRow>
@@ -276,15 +228,11 @@ export const SearchArea: React.FC<Props> = (props) => {
                 <StyledTableCell align="left">
                   <TextField
                     style={{ width: "500px" }}
-                    name="産地"
                     margin="dense"
                     label="産地"
                     size={"small"}
                     variant="outlined"
-                    onChange={(e) =>
-                      setSearchHorse({ ...searchHorse, origin: e.target.value })
-                    }
-                    value={searchHorse.origin}
+                    {...register("origin")}
                   />
                 </StyledTableCell>
               </StyledTableRow>
@@ -295,23 +243,20 @@ export const SearchArea: React.FC<Props> = (props) => {
                 <StyledTableCell align="left">
                   <TextField
                     style={{ width: "500px" }}
-                    name="馬名意味"
                     margin="dense"
                     label="馬名意味"
                     size={"small"}
                     variant="outlined"
-                    onChange={(e) =>
-                      setSearchHorse({
-                        ...searchHorse,
-                        horseNameMeaning: e.target.value,
-                      })
-                    }
-                    value={searchHorse.horseNameMeaning}
+                    {...register("horseNameMeaning")}
                   />
                 </StyledTableCell>
               </StyledTableRow>
               <StyledTableRow>
-                <StyledTableCell component="th" scope="row">
+                <StyledTableCell
+                  component="th"
+                  scope="row"
+                  {...register("sex")}
+                >
                   性別
                 </StyledTableCell>
                 <StyledTableCell align="left">
@@ -320,12 +265,12 @@ export const SearchArea: React.FC<Props> = (props) => {
               </StyledTableRow>
             </TableBody>
           </Table>
-        </form>
-      </TableContainer>
-      <Button variant="contained" onClick={onSubmit}>
-        <SearchIcon sx={{ fontSize: 15 }} />
-        &nbsp;検索
-      </Button>
+        </TableContainer>
+        <Button variant="contained" type="submit">
+          <SearchIcon sx={{ fontSize: 15 }} />
+          &nbsp;検索
+        </Button>
+      </form>
     </div>
   );
 };
