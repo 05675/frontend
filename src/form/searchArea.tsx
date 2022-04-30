@@ -8,15 +8,14 @@ import { styled } from "@mui/material/styles";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import Paper from "@mui/material/Paper";
-import { horseInfoData } from "../constants/data";
-import { GenderCheckBox } from "../components/genderCheckBox";
 import ScreenSearchDesktopIcon from "@mui/icons-material/ScreenSearchDesktop";
-import { SearchInputBox } from "./searchInputBox";
-import { SearchButton } from "./searchButton";
 import Button from "@mui/material/Button";
 import SearchIcon from "@mui/icons-material/Search";
 import TextField from "@mui/material/TextField";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
+import Checkbox from "@mui/material/Checkbox";
+import FormGroup from "@mui/material/FormGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
 
 interface Props {
   label?: string;
@@ -61,14 +60,19 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
  * @param props
  * @returns
  *
- * TODO: 性別のチェックボックスから情報を取得
  * TODO: 各Inputにエラーチェック。
- * 馬名系：カタカナのみ
+ * 馬名系：カタカナと文字数制限の２種類入れる
  * 他：漢字も
  */
 
 export const SearchArea: React.FC<Props> = (props) => {
-  const { register, handleSubmit, getValues } = useForm({
+  const {
+    register,
+    handleSubmit,
+    getValues,
+    control,
+    formState: { errors },
+  } = useForm({
     defaultValues: {
       horseName: "",
       father: "",
@@ -121,13 +125,26 @@ export const SearchArea: React.FC<Props> = (props) => {
                   馬名
                 </StyledTableCell>
                 <StyledTableCell align="left">
-                  <TextField
-                    style={{ width: "500px" }}
-                    margin="dense"
-                    label="馬名"
-                    size={"small"}
-                    variant="outlined"
-                    {...register("horseName")}
+                  <Controller
+                    name="horseName"
+                    control={control}
+                    rules={{ required: "文字数" }}
+                    render={() => (
+                      <TextField
+                        error={Boolean(errors.horseName)}
+                        style={{ width: "500px" }}
+                        margin="dense"
+                        label="馬名"
+                        size={"small"}
+                        variant="outlined"
+                        {...register("horseName", {
+                          maxLength: 9,
+                        })}
+                        helperText={
+                          errors.horseName && "馬名は9文字以内で入力して下さい"
+                        }
+                      />
+                    )}
                   />
                 </StyledTableCell>
               </StyledTableRow>
@@ -260,7 +277,26 @@ export const SearchArea: React.FC<Props> = (props) => {
                   性別
                 </StyledTableCell>
                 <StyledTableCell align="left">
-                  <GenderCheckBox />
+                  <FormGroup row>
+                    <FormControlLabel
+                      control={<Checkbox />}
+                      label="牡"
+                      labelPlacement="start"
+                      {...register("sex")}
+                    />
+                    <FormControlLabel
+                      control={<Checkbox color="secondary" />}
+                      label="牝"
+                      labelPlacement="start"
+                      {...register("sex")}
+                    />
+                    <FormControlLabel
+                      control={<Checkbox color="success" />}
+                      label="騙"
+                      labelPlacement="start"
+                      {...register("sex")}
+                    />
+                  </FormGroup>
                 </StyledTableCell>
               </StyledTableRow>
             </TableBody>
