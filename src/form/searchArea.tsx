@@ -60,9 +60,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
  * @param props
  * @returns
  *
- * TODO: 各Inputにエラーチェック。
- * 馬名系：カタカナと文字数制限の２種類入れる
- * 他：漢字も
+ * TODO: 各Inputにエラーチェックを入れる
  */
 
 export const SearchArea: React.FC<Props> = (props) => {
@@ -139,10 +137,17 @@ export const SearchArea: React.FC<Props> = (props) => {
                         variant="outlined"
                         {...register("horseName", {
                           maxLength: 9,
+                          // TODO: メソッド化する
+                          pattern: /^[ァ-ヶー　]+$/,
                         })}
-                        helperText={
-                          errors.horseName && "馬名は9文字以内で入力して下さい"
-                        }
+                        helperText={(() => {
+                          // TODO: メソッド化する
+                          if (errors.horseName)
+                            if (errors.horseName.type === "maxLength")
+                              return "馬名は9文字以内で入力して下さい";
+                            else if (errors.horseName.type === "pattern")
+                              return "全角カタカナで入力して下さい";
+                        })()}
                       />
                     )}
                   />
