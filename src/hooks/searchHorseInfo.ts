@@ -1,33 +1,25 @@
 import { useState } from "react";
 import axios from "axios";
-import { HorseInfo } from "../types/api/horseInfo";
-import { HorseInfotest } from "../types/horseInfo2";
 
 export const SearchHorseInfo = () => {
-  const reqBody = {
-    horseName: "キタサンブラック"
-  };
-  const [stateHorseInfo, setStateHorseInfo] = useState<Array<HorseInfotest>>(
-    []
-  );
+  const [searchHorseInfo, setSearchHorseInfo] = useState({});
+  console.log("test searchHorseInfo:", searchHorseInfo);
 
-  // 2. 引数にリクエストを入れる
-  const getSearchHorseInfo = () => {
-    axios
-      .get<Array<HorseInfo>>("https://localhost:5001/api/horseinfoes/", {
-        // TODO: ここにリクエストを入れる
-        params: { father: "キング", mother: "ア" }
-      })
-      .then((res) => {
-        const data = res.data.map((h) => ({
-          hoseName: h.horseName,
-          father: h.father,
-          mother: h.mother,
-          motherFather: h.motherFather
-        }));
-        // setStateHorseInfo(data);
-      });
+  /**
+   * TODO: 以下のエラーを解消する
+   * has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+   */
+  const getSearchHorseInfo = async (params: object) => {
+    console.log("test params:", params);
+    try {
+      const res = await axios.get(
+        "https://localhost:5001/api/horseinfoes",
+        params
+      );
+      setSearchHorseInfo(res);
+    } catch (e) {
+      console.log(e);
+    }
   };
-  return { SearchHorseInfo, stateHorseInfo };
-  // return { getUsers, userProfile, loading, error };
+  return { searchHorseInfo, setSearchHorseInfo, getSearchHorseInfo };
 };

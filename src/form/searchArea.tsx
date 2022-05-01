@@ -17,6 +17,7 @@ import Checkbox from "@mui/material/Checkbox";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import { ErrorMessage, HorseName } from "utils/validation";
+import { SearchHorseInfo } from "hooks/searchHorseInfo";
 
 interface Props {
   label?: string;
@@ -61,8 +62,8 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
  * @param props
  * @returns
  *
- * TODO: 検索ボタンの位置をよしなにする
- * TODO: APIにリクエストを投げる
+ * TODO:
+ * 検索結果を表示する
  */
 
 export const SearchArea: React.FC<Props> = (props) => {
@@ -89,12 +90,16 @@ export const SearchArea: React.FC<Props> = (props) => {
     },
   });
 
+  const { searchHorseInfo, setSearchHorseInfo, getSearchHorseInfo } =
+    SearchHorseInfo();
+
   const onSubmit = useCallback(
     (data: Info) => {
       getValues();
-      console.log("test:", data);
+      console.log("test data:", data);
+      getSearchHorseInfo(data);
     },
-    [getValues]
+    [getSearchHorseInfo, getValues]
   );
 
   return (
@@ -128,7 +133,6 @@ export const SearchArea: React.FC<Props> = (props) => {
                   <Controller
                     name="horseName"
                     control={control}
-                    rules={{ required: "文字数" }}
                     render={() => (
                       <TextField
                         error={Boolean(errors.horseName)}
