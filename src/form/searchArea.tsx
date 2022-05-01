@@ -16,6 +16,7 @@ import { useForm, Controller } from "react-hook-form";
 import Checkbox from "@mui/material/Checkbox";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
+import { ErrorMessage, HorseName } from "utils/validation";
 
 interface Props {
   label?: string;
@@ -60,7 +61,8 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
  * @param props
  * @returns
  *
- * TODO: 各Inputにエラーチェックを入れる
+ * TODO: 検索ボタンの位置をよしなにする
+ * TODO: APIにリクエストを投げる
  */
 
 export const SearchArea: React.FC<Props> = (props) => {
@@ -135,19 +137,8 @@ export const SearchArea: React.FC<Props> = (props) => {
                         label="馬名"
                         size={"small"}
                         variant="outlined"
-                        {...register("horseName", {
-                          maxLength: 9,
-                          // TODO: メソッド化する
-                          pattern: /^[ァ-ヶー　]+$/,
-                        })}
-                        helperText={(() => {
-                          // TODO: メソッド化する
-                          if (errors.horseName)
-                            if (errors.horseName.type === "maxLength")
-                              return "馬名は9文字以内で入力して下さい";
-                            else if (errors.horseName.type === "pattern")
-                              return "全角カタカナで入力して下さい";
-                        })()}
+                        {...register("horseName", HorseName)}
+                        helperText={ErrorMessage(errors.horseName)}
                       />
                     )}
                   />
@@ -159,12 +150,14 @@ export const SearchArea: React.FC<Props> = (props) => {
                 </StyledTableCell>
                 <StyledTableCell align="left">
                   <TextField
+                    error={Boolean(errors.father)}
                     style={{ width: "500px" }}
                     margin="dense"
                     label="父"
                     size={"small"}
                     variant="outlined"
-                    {...register("father")}
+                    {...register("father", HorseName)}
+                    helperText={ErrorMessage(errors.father)}
                   />
                 </StyledTableCell>
               </StyledTableRow>
@@ -174,12 +167,14 @@ export const SearchArea: React.FC<Props> = (props) => {
                 </StyledTableCell>
                 <StyledTableCell align="left">
                   <TextField
+                    error={Boolean(errors.mother)}
                     style={{ width: "500px" }}
                     margin="dense"
                     label="母"
                     size={"small"}
                     variant="outlined"
-                    {...register("mother")}
+                    {...register("mother", HorseName)}
+                    helperText={ErrorMessage(errors.mother)}
                   />
                 </StyledTableCell>
               </StyledTableRow>
@@ -189,12 +184,14 @@ export const SearchArea: React.FC<Props> = (props) => {
                 </StyledTableCell>
                 <StyledTableCell align="left">
                   <TextField
+                    error={Boolean(errors.motherFather)}
                     style={{ width: "500px" }}
                     margin="dense"
                     label="母父"
                     size={"small"}
                     variant="outlined"
-                    {...register("motherFather")}
+                    {...register("motherFather", HorseName)}
+                    helperText={ErrorMessage(errors.motherFather)}
                   />
                 </StyledTableCell>
               </StyledTableRow>
