@@ -9,9 +9,9 @@ export const SearchHorseInfo = () => {
    * TODO: 性別のクエリパラメータの作成
    */
   const getSearchHorseInfo = async (params: HorseInfo) => {
-    console.log("test params:", params);
     try {
-      const res = await axios.get("/api/horseinfoes", {
+      // TODO: URLを「/api/horseinfoes」の記載だけで済むようにしたい
+      const res = await axios.get("https://localhost:5001/api/horseinfoes", {
         params: {
           horseName: params.horseName,
           birthday: params.birthday,
@@ -19,7 +19,9 @@ export const SearchHorseInfo = () => {
           mother: params.mother,
           motherFather: params.motherFather,
           motherMother: params.motherMother,
-          sex: params.sex,
+          male: params.male,
+          wife: params.wife,
+          counterfeit: params.counterfeit,
           coatColor: params.coatColor,
           horseNameMeaning: params.horseNameMeaning,
           horseOwner: params.horseOwner,

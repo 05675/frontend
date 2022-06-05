@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import Table from "@mui/material/Table";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
@@ -18,25 +18,10 @@ import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import { ErrorMessage, HorseName } from "utils/validation";
 import { SearchHorseInfo } from "hooks/searchHorseInfo";
+import { HorseInfo } from "types/api/horseInfo";
 
 interface Props {
   label?: string;
-}
-
-interface Info {
-  horseName?: string;
-  birthday?: string;
-  father?: string;
-  mother?: string;
-  motherFather?: string;
-  motherMother?: string;
-  sex?: string;
-  coatColor?: string;
-  horseNameMeaning?: string;
-  horseOwner?: string;
-  trainer?: string;
-  productionRanch?: string;
-  origin?: string;
 }
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -80,7 +65,10 @@ export const SearchArea: React.FC<Props> = (props) => {
       mother: "",
       motherFather: "",
       motherMother: "",
-      sex: "",
+      sex: [],
+      male: "",
+      wife: "",
+      counterfeit: "",
       coatColor: "",
       horseNameMeaning: "",
       horseOwner: "",
@@ -94,9 +82,17 @@ export const SearchArea: React.FC<Props> = (props) => {
     SearchHorseInfo();
 
   const onSubmit = useCallback(
-    (data: Info) => {
+    (data: HorseInfo) => {
       getValues();
-      console.log("test data:", data);
+      if (data.male) {
+        data.male = "牡";
+      }
+      if (data.wife) {
+        data.wife = "牝";
+      }
+      if (data.counterfeit) {
+        data.counterfeit = "せん";
+      }
       getSearchHorseInfo(data);
     },
     [getSearchHorseInfo, getValues]
@@ -285,22 +281,31 @@ export const SearchArea: React.FC<Props> = (props) => {
                 <StyledTableCell align="left">
                   <FormGroup row>
                     <FormControlLabel
-                      control={<Checkbox />}
+                      control={<Checkbox defaultChecked name="male" />}
                       label="牡"
-                      labelPlacement="start"
-                      {...register("sex")}
+                      {...register("male")}
                     />
                     <FormControlLabel
-                      control={<Checkbox color="secondary" />}
+                      control={
+                        <Checkbox
+                          defaultChecked
+                          name="wife"
+                          color="secondary"
+                        />
+                      }
                       label="牝"
-                      labelPlacement="start"
-                      {...register("sex")}
+                      {...register("wife")}
                     />
                     <FormControlLabel
-                      control={<Checkbox color="success" />}
-                      label="騙"
-                      labelPlacement="start"
-                      {...register("sex")}
+                      control={
+                        <Checkbox
+                          defaultChecked
+                          name="counterfeit"
+                          color="success"
+                        />
+                      }
+                      label="セン"
+                      {...register("counterfeit")}
                     />
                   </FormGroup>
                 </StyledTableCell>

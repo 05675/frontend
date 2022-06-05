@@ -5,7 +5,10 @@ export type HorseInfo = {
   mother?: string;
   motherFather?: string;
   motherMother?: string;
-  sex?: string;
+  sex?: string[];
+  male?: string;
+  wife?: string;
+  counterfeit?: string;
   coatColor?: string;
   horseNameMeaning?: string;
   horseOwner?: string;
