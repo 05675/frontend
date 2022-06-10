@@ -18,7 +18,7 @@ import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import { ErrorMessage, HorseName } from "utils/validation";
 import { SearchHorseInfo } from "hooks/searchHorseInfo";
-import { HorseInfo } from "types/api/horseInfo";
+import { HorseInfo } from "types/horseInfo";
 
 interface Props {
   label?: string;

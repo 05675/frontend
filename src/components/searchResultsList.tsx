@@ -13,21 +13,20 @@ import TablePagination from "@mui/material/TablePagination";
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: "#135ef2",
-    color: theme.palette.common.white
+    color: theme.palette.common.white,
   },
   [`&.${tableCellClasses.body}`]: {
-    fontSize: 14
-  }
+    fontSize: 14,
+  },
 }));
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-of-type(odd)": {
-    backgroundColor: theme.palette.action.hover
+    backgroundColor: theme.palette.action.hover,
   },
-  // hide last border
   "&:last-child td, &:last-child th": {
-    border: 0
-  }
+    border: 0,
+  },
 }));
 
 function createData(
@@ -45,7 +44,7 @@ const rows = [
   createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
   createData("Eclair", 262, 16.0, 24, 6.0),
   createData("Cupcake", 305, 3.7, 67, 4.3),
-  createData("Gingerbread", 356, 16.0, 49, 3.9)
+  createData("Gingerbread", 356, 16.0, 49, 3.9),
 ];
 
 const handleChangePage = () => {
@@ -61,8 +60,6 @@ export const SearchResultsList: React.FC = () => {
             <StyledTableCell>馬名</StyledTableCell>
             <StyledTableCell>性別</StyledTableCell>
             <StyledTableCell>馬名意味</StyledTableCell>
-            {/* <StyledTableCell align="right">Carbs&nbsp;(g)</StyledTableCell>
-            <StyledTableCell align="right">Protein&nbsp;(g)</StyledTableCell> */}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -73,8 +70,6 @@ export const SearchResultsList: React.FC = () => {
               </StyledTableCell>
               <StyledTableCell align="right">{row.calories}</StyledTableCell>
               <StyledTableCell align="right">{row.fat}</StyledTableCell>
-              {/* <StyledTableCell align="right">{row.carbs}</StyledTableCell>
-              <StyledTableCell align="right">{row.protein}</StyledTableCell> */}
             </StyledTableRow>
           ))}
         </TableBody>
@@ -88,13 +83,11 @@ export const SearchResultsList: React.FC = () => {
               page={3}
               SelectProps={{
                 inputProps: {
-                  "aria-label": "rows per page"
+                  "aria-label": "rows per page",
                 },
-                native: true
+                native: true,
               }}
               onPageChange={handleChangePage}
-              // onRowsPerPageChange={handleChangeRowsPerPage}
-              // ActionsComponent={TablePaginationActions}
             />
           </TableRow>
         </TableFooter>

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import { HorseInfo } from "types/api/horseInfo";
+import { HorseInfo } from "types/horseInfo";
 
 export const SearchHorseInfo = () => {
   const [searchHorseInfo, setSearchHorseInfo] = useState({});

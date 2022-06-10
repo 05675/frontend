@@ -3,7 +3,6 @@ import TextField from "@mui/material/TextField";
 
 interface Props {
   info?: string;
-  test?: (v: string) => void;
 }
 
 interface Info {
@@ -23,8 +22,7 @@ interface Info {
 }
 
 export const SearchInputBox: React.FC<Props> = (props) => {
-  const { info, test } = props;
-  const [textValue, setTextValue] = useState("");
+  const { info } = props;
   const [searchHorse, setSearchHorse] = useState<Info>({
     horseName: "",
     birthday: "",
@@ -38,15 +36,12 @@ export const SearchInputBox: React.FC<Props> = (props) => {
     horseOwner: "",
     trainer: "",
     productionRanch: "",
-    origin: ""
+    origin: "",
   });
 
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setTextValue(value);
+  const handelSubmit = () => {
+    console.log("SearchInputBox handelSubmit");
   };
-
-  const handelSubmit = () => {};
 
   return (
     <form onSubmit={handelSubmit}>
