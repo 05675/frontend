@@ -3,7 +3,7 @@ import axios from "axios";
 import { HorseInfo } from "types/horseInfo";
 
 export const SearchHorseInfo = () => {
-  const [searchHorseInfo, setSearchHorseInfo] = useState({});
+  const [searchHorseInfo, setSearchHorseInfo] = useState<HorseInfo[]>([]);
 
   /**
    * TODO: 性別のクエリパラメータの作成
@@ -30,10 +30,11 @@ export const SearchHorseInfo = () => {
           origin: params.origin,
         },
       });
-      setSearchHorseInfo(res);
+      setSearchHorseInfo(res.data);
     } catch (e) {
       console.error(e);
     }
   };
+
   return { searchHorseInfo, setSearchHorseInfo, getSearchHorseInfo };
 };

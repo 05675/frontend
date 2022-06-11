@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect, useMemo } from "react";
 import { styled } from "@mui/material/styles";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -9,6 +9,9 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import TableFooter from "@mui/material/TableFooter";
 import TablePagination from "@mui/material/TablePagination";
+import { SearchHorseInfo } from "hooks/searchHorseInfo";
+import { useLocation } from "react-router";
+import { HorseInfo } from "types/horseInfo";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -52,6 +55,17 @@ const handleChangePage = () => {
 };
 
 export const SearchResultsList: React.FC = () => {
+  const { searchHorseInfo, getSearchHorseInfo } = SearchHorseInfo();
+  const location = useLocation();
+
+  const state = useMemo(() => {
+    return location.state as { search: HorseInfo };
+  }, [location.state]);
+
+  useEffect(() => {
+    getSearchHorseInfo(state.search);
+  }, [state.search, getSearchHorseInfo]);
+
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 600 }} aria-label="customized table">
@@ -63,15 +77,21 @@ export const SearchResultsList: React.FC = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <StyledTableRow key={row.name}>
-              <StyledTableCell component="th" scope="row">
-                {row.name}
-              </StyledTableCell>
-              <StyledTableCell align="right">{row.calories}</StyledTableCell>
-              <StyledTableCell align="right">{row.fat}</StyledTableCell>
-            </StyledTableRow>
-          ))}
+          {searchHorseInfo ? (
+            searchHorseInfo.map((row: HorseInfo, _i: number) => (
+              <StyledTableRow key={_i}>
+                <StyledTableCell component="th" scope="row">
+                  {row.horseName}
+                </StyledTableCell>
+                <StyledTableCell align="right">{row.sex}</StyledTableCell>
+                <StyledTableCell align="right">
+                  {row.horseNameMeaning}
+                </StyledTableCell>
+              </StyledTableRow>
+            ))
+          ) : (
+            <></>
+          )}
         </TableBody>
         <TableFooter>
           <TableRow>

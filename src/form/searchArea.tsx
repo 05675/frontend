@@ -19,6 +19,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import { ErrorMessage, HorseName } from "utils/validation";
 import { SearchHorseInfo } from "hooks/searchHorseInfo";
 import { HorseInfo } from "types/horseInfo";
+import { useNavigate } from "react-router";
 
 interface Props {
   label?: string;
@@ -78,24 +79,25 @@ export const SearchArea: React.FC<Props> = (props) => {
     },
   });
 
-  const { searchHorseInfo, setSearchHorseInfo, getSearchHorseInfo } =
-    SearchHorseInfo();
+  const { searchHorseInfo, getSearchHorseInfo } = SearchHorseInfo();
+
+  const navigate = useNavigate();
 
   const onSubmit = useCallback(
-    (data: HorseInfo) => {
+    (horseInfo: HorseInfo) => {
       getValues();
-      if (data.male) {
-        data.male = "牡";
+      if (horseInfo.male) {
+        horseInfo.male = "牡";
       }
-      if (data.wife) {
-        data.wife = "牝";
+      if (horseInfo.wife) {
+        horseInfo.wife = "牝";
       }
-      if (data.counterfeit) {
-        data.counterfeit = "せん";
+      if (horseInfo.counterfeit) {
+        horseInfo.counterfeit = "せん";
       }
-      getSearchHorseInfo(data);
+      navigate("/search", { state: { search: horseInfo } });
     },
-    [getSearchHorseInfo, getValues]
+    [getValues, navigate]
   );
 
   return (
